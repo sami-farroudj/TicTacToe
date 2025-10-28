@@ -17,10 +17,14 @@ def printBoard(board):
 # ask player one to play 
 def playerInput(board):
     place= int(input("enter a number 1-9: "))
-    if place >= 1 and place <= 9 and board[place-1] == "-":
-        board[place-1]=player
-    else:
-        print("Spot alraedy take try again")
+    if place >= 1 and place <= 9:
+        if board[place-1] == "-":
+            board[place-1]=player
+        else:
+            print("Spot alraedy take try again")
+            playerInput(board)
+    
+        
 
 
 #check if horizntable line are winnig
@@ -96,4 +100,7 @@ while GameRunning:
     checkwin()
     checktie(board)
     switchPlayer()
-    
+
+# import random
+# def bot(board)
+#   random(1-9)
