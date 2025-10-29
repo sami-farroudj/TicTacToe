@@ -31,7 +31,7 @@ def playerInput(board):
             print("Spot alraedy taken try again")
             playerInput(board)
     else:
-        print(f"impossible de jouer {place} ")
+        print(f"impossible to play {place} ")
         playerInput(board)
 # AI EASY
 def IAF(board,signe):
