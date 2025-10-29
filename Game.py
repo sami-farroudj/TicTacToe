@@ -8,7 +8,7 @@ player = "X"
 Winner = None
 GameRunning = True
 mode = None
-
+signe="O"
 
 
 #creat Game board
@@ -33,16 +33,46 @@ def playerInput(board):
     else:
         print(f"impossible de jouer {place} ")
         playerInput(board)
-    
-def IAF(board):
+# AI EASY
+def IAF(board,signe):
    while True :
     place = random.randint(1,9)
     if board[place-1] == "-":
-        board[place-1] = "O"
+        board[place-1] = signe
         break
 
+# AI MEDIUM
+def IAM(board,signe):
+    bestScore=-999
+    bestmove= None
 
+    for i in range(9):
+        if board[i]=="-":
+            board[i]=signe
+            score=minimax(board, False,True)
+            board[i]="-"
+            if score> bestScore:
+                bestScore=score
+                bestmove=i
+    if bestmove !=None:
+        board[bestmove]=signe
 
+# AI IMPOSSIBLE
+
+def IAI(board,signe):
+    bestscore=-999
+    bestmove= None
+
+    for i in range(9):
+        if board[i]=="-":
+            board[i]= signe
+            score = minimax(board,False,False)
+            board[i]="-"
+            if score> bestscore:
+                bestscore=score
+                bestmove=i
+    if bestmove != None:
+        board[bestmove]=signe
 
 
 #check if horizntable line are winnig
@@ -90,10 +120,56 @@ def diagcheck(board):
     
 
 
+# Implanting Minimax ai 
+def minimax(board,maxi,medium=False):
+    global Winner
+
+    if horinzontlecheck(board) or rowcheck(board) or diagcheck(board):
+        if Winner == "O":
+            Winner= None
+            return 1
+        elif Winner == "X":
+            Winner= None
+            return -1
+    
+    if  "-" not in board:
+        return 0
+    
+
+    if maxi== True:
+        bestScore= -999
+        for i in range(9):
+            if board[i]=="-":
+                board[i]="O"
+                score = minimax(board,False,medium)
+                board[i]="-"
+                if medium==True:
+                    if score <=0 and score > bestScore:
+                      bestScore= score
+                else:
+                    if score > bestScore:
+                        bestScore=score
+        return bestScore
+    
+    else:
+        bestScore= 999
+        for i in range(9):
+            if board[i]== "-":
+                board[i]="X"
+                score=minimax(board,True,medium)
+                board[i]="-"
+                if score< bestScore:
+                    bestScore=score
+        return bestScore
+    
+
+
+
+
 def switchPlayer():
     global player
     if player == "X":
-        player = "O"
+        player = signe
     else:
         player = "X"
 
@@ -119,34 +195,48 @@ def selectmode():
     global mode
     print("1 Player VS Player")
     print("2 Player VS IA easy")
-    choice =  input("choise 1 or 2: ")
+    print("3 Player VS IA medium")
+    print("4 Player VS IA impossible")
+    choice =  input("choose 1, 2, 3 or 4: ")
     if choice == "1":
         mode = "1v1"
     elif choice == "2":
           mode = "1vIAF"
+    elif choice == "3":
+        mode = "1vIAM"
+    elif choice == "4":
+        mode = "1vIAI"
     else:
         selectmode()
 
 
+
+# code execution
 selectmode()
 while GameRunning:
     printBoard(board)
     
     if mode == "1v1":
         playerInput(board)
+
     elif mode =="1vIAF":
         if player == "X":
             playerInput(board)
         else:
-            IAF(board)
+            IAF(board,signe)
+
+    elif mode == "1vIAM":
+        if player == "X":
+            playerInput(board)
+        else:
+            IAM(board,signe)
+
+    elif mode == "1vIAI":
+        if player == "X":
+            playerInput(board)
+        else:
+            IAI(board,signe)
     checkwin()
     checktie(board)
     switchPlayer()
 
-# import random
-# def bot(board)
-#   random(1-9)
-
-
-
-# prblm jouer au dessus de 9 et -1
