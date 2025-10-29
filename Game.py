@@ -1,3 +1,5 @@
+import random
+
 board = ["-","-","-",
         "-","-","-",
         "-","-","-"]
@@ -5,6 +7,9 @@ board = ["-","-","-",
 player = "X"
 Winner = None
 GameRunning = True
+mode = None
+
+
 
 #creat Game board
 def printBoard(board):
@@ -14,6 +19,8 @@ def printBoard(board):
     print("----------")
     print(board[6] +" | "+board[7]+" | "+board[8])
 
+
+
 # ask player one to play 
 def playerInput(board):
     place= int(input("enter a number 1-9: "))
@@ -21,10 +28,18 @@ def playerInput(board):
         if board[place-1] == "-":
             board[place-1]=player
         else:
-            print("Spot alraedy take try again")
+            print("Spot alraedy taken try again")
             playerInput(board)
     
-        
+def IAF(board):
+   while True :
+    place = random.randint(1,9)
+    if board[place-1] == "-":
+        board[place-1] = "O"
+        break
+
+
+
 
 
 #check if horizntable line are winnig
@@ -70,13 +85,6 @@ def diagcheck(board):
         Winner = board[2]
         return True
     
-# check if tie
-def checktie(board):
-    global GameRunning
-    if "-" not in board:
-        print("it's a tie ")
-        GameRunning = False
-
 
 
 def switchPlayer():
@@ -86,6 +94,17 @@ def switchPlayer():
     else:
         player = "X"
 
+
+
+
+# check if tie
+def checktie(board):
+    global GameRunning
+    if "-" not in board:
+        printBoard(board)
+        print("it's a tie ")
+        GameRunning = False
+
 def checkwin():
     global GameRunning
     if horinzontlecheck(board) or diagcheck(board) or rowcheck(board):
@@ -93,10 +112,30 @@ def checkwin():
         print(f'the winner is {Winner}')
         GameRunning = False
 
+def selectmode():
+    global mode
+    print("1 Player VS Player")
+    print("2 Player VS IA easy")
+    choice =  input("choise 1 or 2: ")
+    if choice == "1":
+        mode = "1v1"
+    elif choice == "2":
+          mode = "1vIAF"
+    else:
+        selectmode()
 
+
+selectmode()
 while GameRunning:
     printBoard(board)
-    playerInput(board)
+    
+    if mode == "1v1":
+        playerInput(board)
+    elif mode =="1vIAF":
+        if player == "X":
+            playerInput(board)
+        else:
+            IAF(board)
     checkwin()
     checktie(board)
     switchPlayer()
