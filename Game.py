@@ -24,12 +24,15 @@ def printBoard(board):
 # ask player one to play 
 def playerInput(board):
     place= int(input("enter a number 1-9: "))
-    if place >= 1 and place <= 9:
+    if 1 <= place <= 9:
         if board[place-1] == "-":
             board[place-1]=player
         else:
             print("Spot alraedy taken try again")
             playerInput(board)
+    else:
+        print(f"impossible de jouer {place} ")
+        playerInput(board)
     
 def IAF(board):
    while True :
@@ -143,3 +146,7 @@ while GameRunning:
 # import random
 # def bot(board)
 #   random(1-9)
+
+
+
+# prblm jouer au dessus de 9 et -1
