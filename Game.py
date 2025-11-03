@@ -24,20 +24,23 @@ def printBoard(board):
 # ask player one to play 
 def playerInput(board):
     while True:
-        try:
-            place= int(input("enter a number 1-9: "))
-            if 1 <= place <= 9:
-                if board[place-1] == "-":
-                    board[place-1]=player
-                    break
-                else:
-                    print("Spot alraedy taken try again!")
-                    playerInput(board)
+        place = input("Enter a number 1-9: ")
+
+        if not place.isdigit(): 
+            print("is not a number!")
+            continue
+
+        place = int(place)
+
+        if 1 <= place <= 9:
+            if board[place - 1] == "-":
+                board[place - 1] = player
+                break
             else:
-                print(f"impossible to play {place} ")
-                playerInput(board)
-        except ValueError:
-            print("Enter a number between 1 and 9!")
+                print("Spot already taken, try again!")
+        else:
+            print(f"Impossible to play {place}, choose 1-9.")
+
 # AI EASY
 def IAF(board,signe):
    while True :
